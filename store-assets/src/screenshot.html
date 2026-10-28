@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+  * { box-sizing: border-box; margin: 0; }
+  body { width: 1280px; height: 800px; font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+         background: #f1f5fb; color: #1f2937; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px; }
+  h1 { font-size: 46px; font-weight: 700; letter-spacing: -0.5px; }
+  .sub { font-size: 22px; color: #4b5563; margin-top: -24px; }
+  .row { display: flex; flex-direction: column; gap: 10px; width: 1100px; }
+  .label { font-size: 18px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; }
+  .strip { background: #dfe3ea; border-radius: 14px 14px 0 0; padding: 10px 12px 0; display: flex; gap: 4px; height: 58px; }
+  .tab { background: #eef1f5; border-radius: 10px 10px 0 0; flex: 0 1 190px; min-width: 0; display: flex; align-items: center;
+         gap: 10px; padding: 0 14px; font-size: 16px; color: #4b5563; white-space: nowrap; overflow: hidden; }
+  .tab .fav { width: 18px; height: 18px; border-radius: 4px; flex: none; }
+  .tab .t { overflow: hidden; text-overflow: ellipsis; flex: 1; }
+  .tab .x { color: #9ca3af; flex: none; }
+  .tab.pin { flex: 0 0 52px; justify-content: center; padding: 0; }
+  .tab.active { background: #fff; color: #111827; font-weight: 600; }
+  .tab.gone { opacity: .35; text-decoration: line-through; }
+  .page { background: #fff; height: 70px; border-radius: 0 0 14px 14px; box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+  .arrow { font-size: 30px; color: #1a73e8; font-weight: 700; display: flex; align-items: center; gap: 16px; }
+  kbd { font-family: inherit; font-size: 20px; background: #fff; border: 1px solid #c7d2e3; border-bottom-width: 3px; border-radius: 8px; padding: 4px 12px; color: #1f2937; }
+</style></head><body>
+  <h1>Keep this tab. Close the rest.</h1>
+  <div class="sub">One click on the toolbar button, or a keyboard shortcut.</div>
+  <div class="row">
+    <div class="label">Before</div>
+    <div>
+      <div class="strip" id="before"></div>
+      <div class="page"></div>
+    </div>
+  </div>
+  <div class="arrow">↓ <span>Click</span> <img src="../../icons/icon48.png" width="36" height="36" alt=""> <span>or press</span> <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Q</kbd></div>
+  <div class="row">
+    <div class="label">After — pinned tabs stay put</div>
+    <div>
+      <div class="strip" id="after"></div>
+      <div class="page"></div>
+    </div>
+  </div>
+<script>
+  const tabs = [
+    ["pin", "#ea4335"], ["pin", "#34a853"],
+    ["Inbox (14)", "#fbbc04"], ["Quarterly report – Docs", "#4285f4"], ["Flights to Lisbon", "#9334e6"],
+    ["Project plan", "#1a73e8", "active"], ["Recipe: lemon pasta", "#e8710a"], ["How to fix a leaky tap", "#d93025"],
+    ["News", "#188038"],
+  ];
+  function render(id, after) {
+    const el = document.getElementById(id);
+    for (const [title, color, state] of tabs) {
+      const t = document.createElement("div");
+      const pin = title === "pin";
+      if (after && !pin && !state) continue;
+      t.className = "tab" + (pin ? " pin" : "") + (state ? " active" : "");
+      t.innerHTML = `<span class="fav" style="background:${color}"></span>` +
+        (pin ? "" : `<span class="t">${title}</span><span class="x">✕</span>`);
+      el.appendChild(t);
+    }
+  }
+  render("before", false);
+  render("after", true);
+</script>
+</body></html>
